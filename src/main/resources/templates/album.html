@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Album</title>
+    <link rel="stylesheet" type="text/css" href = "/style.css">
+</head>
+<body>
+
+
+<form action="/album" method="POST">
+    <h2>Add a new album</h2>
+    Title :  <input type="text" name="albumTitle">
+    Artist: <input type="text" name="artist">
+    SongCount : <input type="Text" name="songCount">
+    Length : <input type="Text" name="length">
+    URL : <input type="Text" name="length">
+    <input type="submit">
+</form>
+<ul>
+    <li th:each="album : ${albumList}">
+            <span th:text= "${album}"></span>
+             <img th:src = ${album.url} >
+
+    </li>
+</ul>
+
+</body>
+</html>
