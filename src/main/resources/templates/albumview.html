@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<ul>
+    <li th:each="song : ${songList}">
+        <span th:text= "${song}"></span>
+    </li>
+</ul>
+
+<form action="/song" method="POST">
+    <h2>Please input a new song</h2>
+
+    Title: <input type = "text" name = "title">
+    Length: <input type = "text" name = "length">
+    Track Number: <input type = "number" name = "trackNumber">
+    <input type = "submit">
+
+</form>
+
+</body>
+</html>

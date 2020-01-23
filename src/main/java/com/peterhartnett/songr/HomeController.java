@@ -12,11 +12,17 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 
 
+// Research was done at https://spring.io/guides, and also https://www.baeldung.com, and code 401 class 11 demo
+
+
 @Controller
 public class HomeController {
 
     @Autowired
     AlbumRepository albumRepository;
+
+    @Autowired
+    SongRepository songRepository;
 
     @GetMapping("/hello")
     public String hello(){
@@ -43,6 +49,7 @@ public class HomeController {
         return "album";
     }
 
+
     @PostMapping("/album")
     public RedirectView postAlbum(String title, String artist, int songCount, int length, String url){
         Album album = new Album(title, artist, songCount, length, url);
@@ -50,6 +57,49 @@ public class HomeController {
 
         return new RedirectView("/album");
 
+    }
+
+    @GetMapping("/album/view/{id}")
+    public String getOneAlbum(Model m, @PathVariable long id){
+        // Album testAlbum = new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" );
+        //Album[] album = new Album[]{new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ),new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" )};
+        Album albumView = albumRepository.getOne(id);
+
+        m.addAttribute("album", albumView);
+
+        return "/albumview";
+    }
+
+    // Code Fellows 401d7 class 13 demo was referenced for the song- album one to many relationship
+    @PostMapping("/song")
+    public RedirectView addSong(long id, String title, int length, int trackNumber){
+      Album album = albumRepository.getOne(id);
+      Song newSong = new Song(title, length, trackNumber, album);
+
+      songRepository.save(newSong);
+
+
+        return new RedirectView("/albumview");
+    }
+
+    @GetMapping("/albumview")
+    public String getSongs(Model m){
+        // Album testAlbum = new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" );
+        //Album[] album = new Album[]{new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ),new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" )};
+        List<Song>song = songRepository.findAll();
+
+        m.addAttribute("songlist", song);
+        //albumRepository.save(testAlbum);
+        return "albumview";
+    }
+
+    // class 13 demo was referenced for the delete mapping https://github.com/codefellows/seattle-java-401d7/blob/master/class-13/songr/src/main/java/com/ncarignan/songr/HomeController.java
+    @PostMapping("/album/delete/{id}")
+    public RedirectView deleteAlbum(@PathVariable long id){
+        albumRepository.deleteById(id);
+
+
+        return new RedirectView("/album");
     }
 
 

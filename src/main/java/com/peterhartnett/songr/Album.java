@@ -2,19 +2,21 @@
 package com.peterhartnett.songr;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 
-    @Entity
+@Entity
     public class Album {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         long id;
-    String title;
-    String artist;
+
+
+        @OneToMany(mappedBy = "album")
+                public List<Song> songs;
+   public  String title;
+   public String artist;
     int songCount;
     int length;
     public String url;
@@ -30,6 +32,11 @@ import javax.persistence.Id;
 
     public Album(){
 
+    }
+
+    public long getId(){
+
+        return id;
     }
 
     public String toString(){
