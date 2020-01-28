@@ -56,7 +56,6 @@ public class HomeController {
         albumRepository.save(album);
 
         return new RedirectView("/album");
-
     }
 
     @GetMapping("/album/view/{id}")
@@ -64,34 +63,34 @@ public class HomeController {
         // Album testAlbum = new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" );
         //Album[] album = new Album[]{new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ),new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" )};
         Album albumView = albumRepository.getOne(id);
+        List<Song> songs = songRepository.findAlbum(albumView);
+        m.addAttribute("songs", songs);
 
-        m.addAttribute("album", albumView);
-
-        return "/albumview";
+        return "albumview";
     }
 
     // Code Fellows 401d7 class 13 demo was referenced for the song- album one to many relationship
     @PostMapping("/song")
-    public RedirectView addSong(long id, String title, int length, int trackNumber){
+    public String addSong(long id, String title, int length, int trackNumber, Model m){
       Album album = albumRepository.getOne(id);
       Song newSong = new Song(title, length, trackNumber, album);
 
       songRepository.save(newSong);
+        m.addAttribute("album", album);
 
-
-        return new RedirectView("/albumview");
+        return "newSong";
     }
 
-    @GetMapping("/albumview")
-    public String getSongs(Model m){
-        // Album testAlbum = new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" );
-        //Album[] album = new Album[]{new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ),new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" )};
-        List<Song>song = songRepository.findAll();
-
-        m.addAttribute("songlist", song);
-        //albumRepository.save(testAlbum);
-        return "albumview";
-    }
+//    @GetMapping("/albumview")
+//    public String getSongs(Model m){
+//        // Album testAlbum = new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" );
+//        //Album[] album = new Album[]{new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ), new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" ),new Album("High Voltage", "ACDC", 12, 4, "http://www.acdc.com/templates/default/images/og_image.jpg" )};
+//        List<Song>song = songRepository.findAll();
+//
+//        m.addAttribute("songlist", song);
+//        //albumRepository.save(testAlbum);
+//        return "albumview";
+//    }
 
     // class 13 demo was referenced for the delete mapping https://github.com/codefellows/seattle-java-401d7/blob/master/class-13/songr/src/main/java/com/ncarignan/songr/HomeController.java
     @PostMapping("/album/delete/{id}")

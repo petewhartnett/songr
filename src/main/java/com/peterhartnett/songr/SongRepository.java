@@ -6,5 +6,6 @@ package com.peterhartnett.songr;
 
 public interface SongRepository extends JpaRepository<Song, Long> {
 
+List<Song> findAlbum(Album album);
 
 }

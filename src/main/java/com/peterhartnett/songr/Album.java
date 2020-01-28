@@ -14,7 +14,8 @@ import java.util.List;
 
 
         @OneToMany(mappedBy = "album")
-                public List<Song> songs;
+        public List<Song> songs;
+
    public  String title;
    public String artist;
     int songCount;
