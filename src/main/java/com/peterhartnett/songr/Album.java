@@ -12,9 +12,9 @@ import java.util.List;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         long id;
 
-
-        @OneToMany(mappedBy = "album")
-        public List<Song> songs;
+//
+//        @OneToMany(mappedBy = "album")
+//        public List<Song> songs;
 
    public  String title;
    public String artist;
